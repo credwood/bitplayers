@@ -14,9 +14,7 @@ db_connection = sql.connect(user='root', password='',
 
 db_cursor = db_connection.cursor()
 
-df = pd.read_sql('SELECT * FROM sent_trump', con=db_connection, index_col='id')
-df=df.tail(15)
-df = pd.DataFrame(df)
+df = pd.read_sql('SELECT * FROM sent_trump ORDER BY id DESC LIMIT 15', con=db_connection, index_col='id')
 
 layout = html.Div([
     dash_table.DataTable(
