@@ -1,0 +1,46 @@
+<!-- Dropdown Structure 1-->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="/dashboard">Live Twitter Sentiment</a></li>
+  <li><a href="/tweettable">Recent Tweets</a></li>
+  <li class="divider"></li>
+  <li><a href="#!">three</a></li>
+</ul>
+<!-- Dropdown Structure 2-->
+<ul id="dropdown2" class="dropdown-content">
+  <li><a href="/account">account</a></li>
+  <li><a href="/logout">logout</a></li>
+  <li class="divider"></li>
+  <li><a href="#!">three</a></li>
+</ul>
+<nav class="grey darken-2">
+  <div class="nav-wrapper">
+    <a href="{{ url_for('main.index') }}" class="brand-logo">Bitplayers</a>
+    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="{{ url_for('main.about') }}">About</a></li>
+      {% if current_user.is_authenticated %}
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Analytics<i class="material-icons right">insert_chart</i></a></li>
+        <li><a class="dropdown-trigger" href="" data-target="dropdown2">{{current_user.username}}<i class="material-icons right">settings_applications</i></a></li>
+      {% else %}
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Analytics<i class="material-icons right">insert_chart</i></a></li>
+        <li><a href="{{ url_for('main.register') }}">Register</a></li>
+        <li><a href="{{ url_for('main.login') }}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+  <li><a href="">About</a></li>
+  {% if current_user.is_authenticated %}
+    <li><a href="/dashboard">Live Twitter Sentiment</a></li>
+    <li><a href="/tweettable">Recent Tweets</a></li>
+    <li><a href="/account">{{current_user.username}}</a></li>
+    <li><a href="/logout">Logout</a></li>
+
+  {% else %}
+    <li><a href="/dashboard">Live Twitter Sentiment</a></li>
+    <li><a href="/tweettable">Recent Tweets</a></li>
+    <li><a href="{{ url_for('main.register') }}">Register</a></li>
+    <li><a href="{{ url_for('main.login') }}">Login</a></li>
+  {% endif %}

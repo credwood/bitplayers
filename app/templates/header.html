@@ -1,0 +1,84 @@
+<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='tiny/css/prism.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main/css/materialize.css')}}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <!-- Compiled and minified JavaScript -->
+   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=geo0sp5h7baerxoig0cx9eikj42rk1kbyumaz8ce5vj141l0"></script>
+   <script src="https://cdn.tinymce.com/4/tinymce.js"></script>
+   <script>$(document).ready(function(){
+           $('.sidenav').sidenav();
+           $('.dropdown-trigger').dropdown({
+              inDuration: 300,
+          		outDuration: 225,
+          		constrainWidth: false,
+          		hover: true, // Activate on hover
+          		gutter: 0, // Spacing from edge
+          		coverTrigger: false, // Displays dropdown below the button
+              stopPropogation: true
+           });
+       });</script>
+   <script>
+tinymce.init({
+  selector: '#editor',
+  height: 300,
+
+  entity_encoding: "raw",
+
+  plugins: ["paste", "BeyondGrammar", "code"],
+  toolbar: [
+    "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | BeyondGrammar | code"
+  ],
+
+  bgOptions: {
+    grammar: {
+      languageIsoCode: "en",
+
+      checkStyle: true,
+
+      checkSpelling: true,
+
+      checkGrammar: true,
+
+      showThesaurusByDoubleClick: true,
+
+      showContextThesaurus: false,
+    }
+  }
+});
+</script>
+  <script>
+          tinymce.init({
+            selector: '#controleditor',
+            height: 300,
+
+            entity_encoding: "raw",
+
+            plugins: ["paste", "code"],
+            toolbar: [
+              "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code"
+            ],
+
+          });
+  </script>
+</head>
+<body>
+  <header>
+    {% include 'navbar.html' %}
+
+    {% include 'messages.html' %}
+  </header>
+  <main>
+    <div class="container">
+      <br>
+      {%block content%}
+
+
+
+      {% endblock %}
+    </div>
+  </main>
+    {% include 'footer.html' %}
+</body>

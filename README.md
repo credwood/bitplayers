@@ -3,6 +3,7 @@ An example of a seamless integration of a Dash app into an existing Flask app ba
 
 For details and how to use, please read: [How to embed a Dash app into an existing Flask app](https://medium.com/@olegkomarov_77860/how-to-embed-a-dash-app-into-an-existing-flask-app-ea05d7a2210b)
 
+
 ## Deploy on Heroku (free)
 First, edit the app.json and replace the value of the `repository`:
 ```
