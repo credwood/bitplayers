@@ -5,15 +5,10 @@ import plotly
 import plotly.graph_objs as go
 import pandas as pd
 import mysql.connector as sql
-
 import pandas as pd
 
-db_connection = sql.connect(user='root', password='',
-                              host='127.0.0.1',
-                              database='tweets')
-
-db_cursor = db_connection.cursor()
-
+db_connection= sql.connect(user='root', password='', host='127.0.0.1', database='tweets')
+cur = db_connection.cursor()
 df = pd.read_sql('SELECT * FROM sent_trump ORDER BY id DESC LIMIT 15', con=db_connection, index_col='id')
 
 layout = html.Div([
