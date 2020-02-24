@@ -3,27 +3,22 @@ import dash_html_components as html
 import dash_table
 import plotly
 import plotly.graph_objs as go
-import pandas as pd
-import mysql.connector as sql
-import pandas as pd
-
-db_connection= sql.connect(user='root', password='', host='127.0.0.1', database='tweets')
-cur = db_connection.cursor()
-df = pd.read_sql('SELECT * FROM sent_trump ORDER BY id DESC LIMIT 15', con=db_connection, index_col='id')
 
 layout = html.Div([
     dash_table.DataTable(
+        id='datatable-row-ids',
         style_data={
         'whiteSpace': 'normal',
         'height': 'auto'
         },
-        id='datatable-row-ids',
         columns=[
-            {'name': i, 'id': i, 'deletable': True} for i in df.columns
+            {'name': i, 'id': i, 'deletable': True} for i in ['date_time', 'content', 'verified', 'lang', 'place',
+       'location', 'hashtags', 'user_mentions', 'in_reply_to_screen_name',
+       'user', 'retweet', 'sentiment', 'sentiment_textblob',
+       'sentiment_vader']
             # omit the id column
             if i != 'id'
         ],
-        data=df.to_dict('records'),
         editable=True,
         filter_action="native",
         sort_action="native",
@@ -33,8 +28,9 @@ layout = html.Div([
         selected_rows=[],
         page_action='native',
         page_current= 0,
-        page_size= 10,
+        page_size= 10
     ),
+
     html.Div(id='datatable-row-ids-container')
 ])
 
