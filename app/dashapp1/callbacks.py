@@ -22,6 +22,8 @@ def register_callbacks(dashapp):
             db_cursor = db_connection.cursor()
             df = pd.read_sql('SELECT * FROM sent_trump ORDER BY id DESC LIMIT 1000', con=db_connection, index_col='id')
             #df.sort_values('date_time', inplace=True)
+            db_cursor.close()
+            db_connection.close()
             df["rolling_textblob_ave"] = df["sentiment_textblob"].rolling(int(len(df)/2)).mean()
             df["rolling_vader_ave"] = df["sentiment_vader"].rolling(int(len(df)/2)).mean()
 
