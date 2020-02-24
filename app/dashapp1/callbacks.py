@@ -24,6 +24,7 @@ def register_callbacks(dashapp):
             #df.sort_values('date_time', inplace=True)
             db_cursor.close()
             db_connection.close()
+
             df["rolling_textblob_ave"] = df["sentiment_textblob"].rolling(int(len(df)/2)).mean()
             df["rolling_vader_ave"] = df["sentiment_vader"].rolling(int(len(df)/2)).mean()
 
@@ -57,3 +58,21 @@ def register_callbacks(dashapp):
             with open('errors.txt','a') as f:
                 f.write(str(e))
                 f.write('\n')
+
+    @dashapp.callback(Output('datatable-row-ids', 'data'),
+              [Input('datatable-row-ids', "page_current"),Input('datatable-row-ids', 'page_size')])
+    def generate_table(page_current,page_size):
+        try:
+            db_connection= sql.connect(user='root', password='', host='127.0.0.1', database='tweets')
+            cur = db_connection.cursor()
+            df = pd.read_sql('SELECT * FROM sent_trump ORDER BY id DESC LIMIT 15', con=db_connection, index_col='id')
+            #df.sort_values('date_time', inplace=True)
+            db_cursor.close()
+            db_connection.close()
+
+        except Exception as e:
+            with open('errors.txt','a') as f:
+                f.write(str(e))
+                f.write('\n')
+
+        return df.iloc[page_current*page_size:(page_current+ 1)*page_size].to_dict('records')
