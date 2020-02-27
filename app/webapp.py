@@ -65,14 +65,15 @@ def register():
         return redirect(url_for('main.index'))
 
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data)
-        email = User(email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user = User(username=request.form['username'])
+            email = User(email=request.form['email'])
+            user.set_password(request.form['password'])
+            db.session.add(user)
+            db.session.commit()
 
-        return redirect(url_for('main.login'))
+            return redirect(url_for('main.login'))
 
     return render_template('register.html', title='Register', form=form)
 
@@ -119,7 +120,7 @@ def about():
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('Password Reset Request', sender='charysse.redwood@gmail.com',recipients=[user.email])
+    msg = Message('Password Reset Request', sender='bitplayersproject@gmail.com',recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link:
 {url_for('main.reset_token', token=token, _external=True)}
 
@@ -139,7 +140,7 @@ def reset_request():
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password', 'info')
         return redirect(url_for('main.login'))
-    return render_template("reset_request.html", title='Reset Passwrd',form=form)
+    return render_template("reset_request.html", title='Reset Password',form=form)
 
 @server_bp.route('/reset_password/<token>', methods=('GET', 'POST'))
 def reset_token(token):
@@ -155,4 +156,4 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated, you are now able to log in', 'success')
         return redirect(url_for('main.login'))
-    return render_template("reset_password.html", title='Reset Passwrd',form=form)
+    return render_template("reset_password.html", title='Reset Password',form=form)

@@ -26,7 +26,7 @@ def create_app():
     admin.add_view(MyModelView(Contact, db.session))
 
     register_dashapps(server)
-    register_dashapps_table(server)
+    #register_dashapps_table(server)
     register_extensions(server)
     register_blueprints(server)
 
