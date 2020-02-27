@@ -23,6 +23,9 @@
         </p>
 
         <p>{{ form.submit() }}</p>
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+          {% endif %}
     </form>
   <p> Already a user? <a href="{{ url_for('main.login') }}">Click to log in!</a></p>
 {% endblock %}
