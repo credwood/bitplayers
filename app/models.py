@@ -7,6 +7,9 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import Select2Widget
 from app.extensions import db
 from flask_admin import expose
+from flask import current_app
+
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 class MyModelView(ModelView):
     # Allow only admins to access the Admin views
@@ -27,6 +30,19 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(128))
+
+    def get_reset_token(self, expires_seconds=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_seconds)
+        return s.dumps({'id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            id = s.loads(token)['id']
+        except:
+            return None
+        return User.query.get(id)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -19,5 +19,6 @@
   <p class="error"><strong>Error:</strong> {{ error }}
     {% endif %}
 </form>
-<p> New User? <a href="{{ url_for('main.register') }}">Click to Register!</a></p>
+<p> New user? <a href="{{ url_for('main.register') }}">Click to register!</a></p>
+<p> Forgot password? <a href="{{ url_for('main.reset_request') }}">Click to reset!</a></p>
 {% endblock %}

@@ -6,6 +6,7 @@ from flask_wtf.csrf import CSRFProtect
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 
+
 from config import BaseConfig
 
 csrf = CSRFProtect()
@@ -81,12 +82,14 @@ def register_extensions(server):
     from app.extensions import db
     from app.extensions import login_inst
     from app.extensions import migrate
+    from app.extensions import mail
 
 
     db.init_app(server)
     login_inst.init_app(server)
     login_inst.login_view = 'main.login'
     migrate.init_app(server, db)
+    mail.init_app(server)
 
 
 

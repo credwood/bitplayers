@@ -4,10 +4,10 @@ from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import SubmitField, TextField
 from wtforms import Form, BooleanField, validators
-from wtforms.validators import DataRequired, InputRequired, EqualTo, Length, Email
+from wtforms.validators import DataRequired, InputRequired, EqualTo, Length, Email, ValidationError
 from wtforms.fields.html5 import EmailField
 from wtf_tinymce.forms.fields import TinyMceField
-from .models import Blog
+from .models import Blog, User
 
 class NewPost(FlaskForm):
     blog_title = StringField('Title', validators=[DataRequired(message="All texts must have a title")])
@@ -22,22 +22,37 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
     remember_me = BooleanField('Remember Me')
 
-class ForgotUsername(FlaskForm):
-    pass
+class RequestResetForm(FlaskForm):
+    email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
+    submit = SubmitField('Request Password Reset')
 
-class ForgotPassword(FlaskForm):
-    pass
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if not user:
+            raise ValidationError("No account registered with that email. ")
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('password_hash', message='Passwords must match')])
     email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
     submit = SubmitField('Register')
 
-class ChangePassword(FlaskForm):
-    password = PasswordField('New Password', [InputRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm  = PasswordField('Repeat Password')
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError("That username is already taken. Please try another")
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError("There is no account with that email. You must register first.")
+
+class ResetPassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('password_hash', message='Passwords must match')])
+
+    submit = SubmitField('Reset Password')
 
 class ContactForm(FlaskForm):
     """Contact form."""
