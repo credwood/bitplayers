@@ -1,17 +1,6 @@
 {% extends "header.html" %}
-
 {% block content %}
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    <br>
-    
+
 <h1>Password Reset Request Form</h1>
 <form action="" method="post">
   {{ form.csrf_token }}
@@ -25,4 +14,16 @@
   <p class="error"><strong>Error:</strong> {{ error }}
     {% endif %}
 </form>
+
+<div class="container" style="min-height:100% width:80%">
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+		  <div class="alert alert-warning alert-dismissible" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
 {% endblock %}
