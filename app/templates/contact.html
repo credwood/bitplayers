@@ -33,6 +33,9 @@
         {% endif %}
       </div>
       {{ form.submit }}
+      {% if error %}
+      <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
     </form>
   </div>
   {% endblock %}
