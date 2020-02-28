@@ -19,9 +19,8 @@
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
           {% endif %}
-       <h1>Flashing messages</h1>
         {% for message in get_flashed_messages() %}
-          <div class="alert-error">Error: {{ message }}</div>
+           <p>{{ message }}</p>
         {% endfor %}
       </form>
     </div>
