@@ -19,10 +19,10 @@
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
           {% endif %}
+        {% for message in get_flashed_messages() %}
+                <p>{{ message }}</p>
+            {% endfor %}
       </form>
     </div>
-    {% for message in get_flashed_messages() %}
-            <p>{{ message }}</p>
-        {% endfor %}
 
   {% endblock %}
