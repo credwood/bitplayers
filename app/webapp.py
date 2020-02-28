@@ -117,6 +117,7 @@ def contact():
             db.session.add(new_message)
             db.session.commit()
             return render_template("success.html")
+        return render_template("contact.html", form=form, error=form.errors)
     elif request.method == "GET":
         return render_template("contact.html", form=form)
 
