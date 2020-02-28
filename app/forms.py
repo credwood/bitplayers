@@ -10,7 +10,7 @@ from wtf_tinymce.forms.fields import TinyMceField
 from .models import Blog, User
 
 class NewPost(FlaskForm):
-    blog_title = StringField('Title', validators=[DataRequired(message="All texts must have a title")])
+    blog_title = StringField('Title', validators=[DataRequired(message="All posts must have a title")])
     blog_slug = StringField('Slug', validators=[DataRequired()])
     blog_author = StringField('By', validators=[DataRequired()])
     blog_content = TextAreaField(validators=[DataRequired()])
@@ -50,7 +50,7 @@ class RegistrationForm(FlaskForm):
 
 class ResetPassword(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('password_hash', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('password', message='Passwords must match')])
 
     submit = SubmitField('Reset Password')
 

@@ -160,9 +160,10 @@ def reset_token(token):
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request.index'))
     form = ResetPassword()
-    if form.validate_on_submit():
-        user.set_password(form.password.data)
-        db.session.commit()
-        flash('Your password has been updated, you are now able to log in', 'success')
-        return redirect(url_for('main.login'))
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user.set_password(request.form['password'])
+            db.session.commit()
+            flash('Your password has been updated, you are now able to log in', 'success')
+            return redirect(url_for('main.success'))
     return render_template("reset_password.html", title='Reset Password',form=form)
