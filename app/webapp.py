@@ -67,14 +67,23 @@ def register():
     form = RegistrationForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            user = User(username=request.form['username'])
-            email = User(email=request.form['email'])
+            user_name = User.query.filter_by(username=request.form['username']).first()
+            if user_name:
+                error="There is already an account with that username."
+                return render_template('register.html', form=form, error=error)
+
+            user_email = User.query.filter_by(username=request.form['email']).first()
+            if user_email:
+                error = 'Account associated with this email already taken.'
+                return render_template('register.html', form=form, error=error)
+            user= User(username=request.form['username'],email=request.form['email'])
             user.set_password(request.form['password'])
             db.session.add(user)
             db.session.commit()
 
             return redirect(url_for('main.login'))
-
+        else:
+            render_template('register.html', title='Register', form=form, error=form.errors)
     return render_template('register.html', title='Register', form=form)
 
 @server_bp.route('/adminblog/', methods=['GET', 'POST'])
