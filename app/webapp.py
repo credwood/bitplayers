@@ -112,10 +112,11 @@ def single_slug(slug):
 def contact():
     form = ContactForm()
     if request.method == "POST":
-        new_message = Contact(name=request.form['name'], message=request.form['body'], email=request.form['email'])
-        db.session.add(new_message)
-        db.session.commit()
-        return render_template("success.html")
+        if form.validate_on_submit():
+            new_message = Contact(name=request.form['name'], message=request.form['body'], email=request.form['email'])
+            db.session.add(new_message)
+            db.session.commit()
+            return render_template("success.html")
     elif request.method == "GET":
         return render_template("contact.html", form=form)
 
