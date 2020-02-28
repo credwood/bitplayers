@@ -34,7 +34,7 @@ class RequestResetForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('password_hash', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password', validators=[DataRequired(),InputRequired(), EqualTo('password', message='Passwords must match')])
     email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
     submit = SubmitField('Register')
 
@@ -45,8 +45,8 @@ class RegistrationForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError("There is no account with that email. You must register first.")
+        if user is not None:
+            raise ValidationError("There is an account associated with this email address already.")
 
 class ResetPassword(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
