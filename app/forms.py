@@ -64,5 +64,5 @@ class ContactForm(FlaskForm):
     body = TextField('Message', [
         DataRequired(),
         Length(min=4, message=('Your message is too short.'))])
-    recaptcha = RecaptchaField()
+    #recaptcha = RecaptchaField()
     submit = SubmitField('Submit')
