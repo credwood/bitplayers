@@ -1,0 +1,22 @@
+
+{% extends "header.html" %}
+
+{% block content %}
+<div class="row">
+  {% if posts %}
+    {% for post in posts %}
+          <div class="col s12 m6 l4">
+              <a href="/{{post.blog_slug}}", style="color:#000">
+                  <div class="card hoverable">
+                      <div class="card-content">
+                          <div class="card-title">{{post.blog_title}}</div>
+                          <p style="font-size:70%">By {{post.blog_author}}</p>
+                          <p style="font-size:70%">Published {{post.blog_published|formatdatetime}}</p>
+                      </div>
+                  </div>
+              </a>
+          </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

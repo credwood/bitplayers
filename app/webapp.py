@@ -7,6 +7,8 @@ from app.extensions import db, login_inst, mail
 from app.forms import LoginForm, RegistrationForm, NewPost, ContactForm, ResetPassword, RequestResetForm
 from app.models import User, Blog, Contact
 from flask_mail import Message
+from sqlalchemy import or_, and_
+from functools import reduce
 
 server_bp = Blueprint('main', __name__)
 
@@ -15,17 +17,11 @@ server_bp = Blueprint('main', __name__)
 def index():
     page = request.args.get('page', 1, type=int)
     if page:
-        posts = Blog.query.order_by(Blog.blog_publushed.desc()).paginate(
+        posts = Blog.query.order_by(Blog.blog_published.desc()).paginate(
         page, current_app.config['POSTS_PER_PAGE'], False)
-        next_url = url_for('main.explore', page=posts.next_num) \
-        if posts.has_next else None
-        prev_url = url_for('main.explore', page=posts.prev_num) \
-        if posts.has_prev else None
-        return render_template('index.html', title='Home',
-                           posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
-    else:
-        render_template('indexalt.html', title='Home')
+        return render_template('index.html', title='posts',
+                           posts=posts.items)
+    return render_template('index.html', title='Home')
 
 @server_bp.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -167,3 +163,38 @@ def reset_token(token):
             flash('Your password has been updated, you are now able to log in', 'success')
             return redirect(url_for('main.login'))
     return render_template("reset_password.html", title='Reset Password',form=form)
+
+@server_bp.route('/q/<query>', defaults={'page': 1})
+@server_bp.route('/q/<query>/page-<int:page>')
+def search_results(page, query):
+    if query:
+        query_list = query.split()
+        posts = [Blog.query.filter(or_(Blog.blog_content.like('%' + q + '%'), Blog.blog_title.like('%' + q + '%'),Blog.blog_author.like('%' + q + '%'))) for q in query_list]
+        posts = posts[0].order_by(Blog.blog_published.desc()).all()
+
+        return render_template('search_results.html', posts=posts, meta_title='Search Results')
+    return render_template('search_results.html', meta_title='Search Results')
+
+
+@server_bp.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == "POST":
+        query = request.form['query']
+        if query:
+            return redirect(url_for('main.search_results', query=query))
+
+@server_bp.route('/blogs/', methods=['GET', 'POST'])
+def blogs():
+    page = request.args.get('page', 1, type=int)
+    if page:
+        posts = Blog.query.order_by(Blog.blog_published.desc()).paginate(
+        page, current_app.config['POSTS_PER_PAGE'], False)
+        next_url = url_for('main.explore', page=posts.next_num) \
+        if posts.has_next else None
+        prev_url = url_for('main.explore', page=posts.prev_num) \
+        if posts.has_prev else None
+        return render_template('blogs.html', title='posts',
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+    else:
+        redirect(url_for('main.index'))

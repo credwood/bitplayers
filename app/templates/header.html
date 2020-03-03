@@ -20,6 +20,9 @@
               stopPropogation: true
            });
        });</script>
+   <script>$(".open_right").sideNav({
+            edge: 'align-right'
+            });</script>
    <script>
 tinymce.init({
   selector: '#editor',
@@ -68,13 +71,11 @@ tinymce.init({
   <header>
     {% include 'navbar.html' %}
 
-    {% include 'messages.html' %}
   </header>
   <main>
     <div class="container">
       <br>
       {%block content%}
-
 
 
       {% endblock %}

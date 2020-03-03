@@ -1,7 +1,7 @@
 from flask_login import UserMixin, LoginManager
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 from flask_security import current_user, RoleMixin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import Select2Widget
@@ -9,7 +9,9 @@ from app.extensions import db
 from flask_admin import expose
 from flask import current_app
 
+
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 
 class MyModelView(ModelView):
     # Allow only admins to access the Admin views
@@ -19,6 +21,7 @@ class MyModelView(ModelView):
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    blog_published = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     name = db.Column(db.String(300))
     email = db.Column(db.String(64))
     message = db.Column(db.Text)
@@ -67,7 +70,7 @@ class Blog(db.Model):
     blog_slug = db.Column(db.String(300))
     blog_title = db.Column(db.String(250))
     blog_author = db.Column(db.String(200))
-    blog_publushed = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    blog_published = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     blog_content = db.Column(db.Text)
 
     def __repr__(self):

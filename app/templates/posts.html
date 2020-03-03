@@ -4,9 +4,9 @@
 {% block content %}
 <div class="row">
   <div class="col s12, m8, l8">
-      <h3>{{form.bog_title}}</h3>
+      <h3>{{form.blog_title}}</h3>
       <p>By {{form.blog_author}}</p>
-      <p style="font-size:70%">Published {{form.blog_published}}</p>
+      <p style="font-size:70%">Published {{form.blog_published|formatdatetime}}</p>
       {{form.blog_content|safe}}
   </div>
 </div>
