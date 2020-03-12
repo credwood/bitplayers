@@ -20,8 +20,10 @@ def create_app():
     from app.extensions import db
     from app.dashapp1.layout import layout as layout_1
     from app.dashapp1.callbacks import register_callbacks as register_callbacks_1
-    from app.dashapp2.layout import layout as layout_2
-    from app.dashapp2.callbacks import register_callbacks as register_callbacks_2
+    #from app.dashapp2.layout import layout as layout_2
+    #from app.dashapp2.callbacks import register_callbacks as register_callbacks_2
+    from app.dashapp3.layout import layout as layout_3
+    from app.dashapp3.callbacks import register_callbacks as register_callbacks_3
 
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
@@ -34,7 +36,8 @@ def create_app():
     admin.add_view(MyModelView(Contact, db.session))
 
     register_dashapp(server, 'dashapp1', 'dashboard1', layout_1, register_callbacks_1)
-    register_dashapp(server, 'dashapp2', 'dashboard2', layout_2, register_callbacks_2)
+    #register_dashapp(server, 'dashapp2', 'dashboard2', layout_2, register_callbacks_2)
+    register_dashapp(server, 'dashapp3', 'dashboard3', layout_3, register_callbacks_3)
     register_extensions(server)
     register_blueprints(server)
     server.jinja_env.filters['formatdatetime'] = format_datetime
@@ -63,7 +66,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
         my_dashapp.title = title
         my_dashapp.layout = layout
         register_callbacks_fun(my_dashapp)
-    _protect_dashviews(my_dashapp)
+    #_protect_dashviews(my_dashapp)
 
 def _protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:

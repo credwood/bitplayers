@@ -1,9 +1,10 @@
 <!-- Dropdown Structure 1-->
 <ul id="dropdown1" class="dropdown-content">
-  <li><a href="/dashboard1">Live Twitter Sentiment</a></li>
-  <li><a href="/dashboard2">Live Twitter Term Frequency Search</a></li>
-  <li class="divider"></li>
-  <li><a href="{{ url_for('main.blogs')}}">Blogs</a></li>
+  <li><a href="/dashboard1">Sentiment</a></li>
+  <li><a href="/dashboard2">Search Term Frequency</a></li>
+  <li><a href="/dashboard3">Search Term Top Locations</a></li>
+  <!--<li class="divider"></li>-->
+  <!--<li><a href="{{ url_for('main.blogs')}}">Blogs</a></li>-->
 
 </ul>
 <!-- Dropdown Structure 2-->
@@ -11,7 +12,7 @@
   <li><a href="/account">Account</a></li>
   <li><a href="/logout">Logout</a></li>
   <li class="divider"></li>
-  <li><a href="#!">Shopt Data Tools</a></li>
+  <li><a href="#!">Shop Data Tools</a></li>
 
 </ul>
 <nav class="grey darken-2">
@@ -29,10 +30,10 @@
       </form></li>
       <li><a href="{{ url_for('main.about') }}">About</a></li>
       {% if current_user.is_authenticated %}
-        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Analytics<i class="material-icons right">insert_chart</i></a></li>
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Live Twitter Analytics<i class="material-icons right">insert_chart</i></a></li>
         <li><a class="dropdown-trigger" href="" data-target="dropdown2">{{current_user.username}}<i class="material-icons right">settings_applications</i></a></li>
       {% else %}
-        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Analytics<i class="material-icons right">insert_chart</i></a></li>
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Live Twitter Analytics<i class="material-icons right">insert_chart</i></a></li>
         <li><a href="{{ url_for('main.register') }}">Register</a></li>
         <li><a href="{{ url_for('main.login') }}">Login</a></li>
       {% endif %}
