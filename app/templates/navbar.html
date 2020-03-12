@@ -46,12 +46,14 @@
       {% if current_user.is_authenticated %}
         <li><a href="/dashboard1">Live Twitter Sentiment</a></li>
         <li><a href="/dashboard2">Live Twitter Term Frequency Search</a></li>
+        <li><a href="/dashboard3">Search Term Top Locations</a></li>
         <li><a href="/account">{{current_user.username}}</a></li>
         <li><a href="/logout">Logout</a></li>
 
       {% else %}
         <li><a href="/dashboard1">Live Twitter Sentiment</a></li>
         <li><a href="/dashboard2">Live Twitter Term Frequency Search</a></li>
+        <li><a href="/dashboard3">Search Term Top Locations</a></li>
         <li><a href="{{ url_for('main.register') }}">Register</a></li>
         <li><a href="{{ url_for('main.login') }}">Login</a></li>
       {% endif %}
